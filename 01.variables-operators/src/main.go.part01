@@ -1,0 +1,148 @@
+// PART 1: WHAT DOES GO LOOK LIKE
+// ******************************
+
+// Package
+// *******
+// Package declaration
+// All Go files must start with one of these
+// For executables, it must be named package main
+// For reusable libraries, it can be named anything
+// All Go files in the same directory are considered part of the same package
+// All files in the same directory must have the same package name
+
+package main
+
+// Imports
+// *******
+// Allows to import additional functionalities from existing packages
+// These are imports from the standard library
+// We can also import from 3rd-Party libraries
+// A package is not from the standard library if it looks like a github URL
+// All listed import must be used
+// To use a new module, add it to your import path
+// Go will automatically download it the next time you build code
+// Imports only apply to the file they are declared in: No Global Imports
+// But there are automation tools that can handle this
+
+import (
+	"errors"
+	"fmt"
+	"log"
+	"math/rand/v2"
+	"strconv"
+	"strings"
+	"time"
+	"unicode/utf8"
+)
+
+// Global Variables
+// ****************
+// Variable declarations are in the format: var varName varType = OptionalInitialValue
+// If a variable is not initialized at declaration, it will have its type's default zero-value
+// Strings in Go support multi-byte UFT-8 encoding
+// There are 3 types of lists in Go:
+//  - Slice: Typed, Dynamic Length, Auto-Increment and Contiguous Number Key
+//  - Array: Typed, Fixed Length, Auto-Increment and Contiguous Number Key
+//  - Map:   Typed, Key-Value Pairs, Explicit-Choice Key
+
+// This is an example of a global variable of type slice of strings
+var helloList []string = []string{
+	"Hello, world",
+	"Καλημέρα κόσμε",
+	"こんにちは世界",
+	"سلام دنیا",
+	"Привет, мир",
+}
+
+// Functions
+// *********
+// Function declarations are in the format: func funcName(argName argType) OptionalReturnType { body }
+// A function acts as a unit of logic that is called when and as often as is needed
+// Calling a function is a blocking operation: The code that calls it stops running and waits for the function to finish running
+// Functions are a great tool for keeping code organized and understandable
+// NOTE: Having an error as last return value is a very common thing to have in Go
+// NOTE: The closest comment or group of comments at the top of the function is used as its docstring
+
+// Selects an option from a list of "hello world" strings and returns that.
+//
+// Args:
+//   - index: The index of the string in the list
+//
+// Return:
+//   - The hello string from the list
+func hello(index int) (string, error) {
+	// Handle error case: Out of Range index
+	// In Go, errors are handled explicitly with if-conditions
+	if index < 0 || index > len(helloList)-1 {
+		// Create an error, convert the int type to a string
+		return "", errors.New("out of range: " + strconv.Itoa(index))
+	}
+
+	// Return the value from helloList
+	// In Go, nil represents something with no value and no type
+	return helloList[index], nil
+}
+
+// main
+// ****
+// This is a special function: Only used for executable packages
+// It is the entry point of an executable application
+// Any package main must have a main function declared in one of the Go files
+
+// Entry point of the application.
+func main() {
+	// Generating a random integer between [0, len(helloList))
+	// Create a source with a known seed
+	// rand.NewPCG() creates a new PCG seeded-source that requires a seed of two uint64 numbers
+	// We are using time.Now().UnixNano() as seed
+	// time.Now() returns a struct: A collection of properties and functions
+	// UnixNano() allows to get Nanosecond int64 timestamp from that
+	var nowTs int64 = time.Now().UnixNano()
+
+	// We convert nowTs to uint64 to pass them to NewPCG
+	// Using := allows to declare and initialize a variable at once
+	// The type of the variable is implicited from the type of the assigned value
+	// In this case, rand.NewPCG() returns a *rand.PCG type, so src is a *rand.PCG
+	// This shortcut is one of the many things that makes Go feel like a dynamically typed language
+	// NOTE: We only use := when declaring AND initializing
+	// Successive re-assignements must use =
+	src := rand.NewPCG(uint64(nowTs), uint64(nowTs*2))
+
+	// Create a random number generator from the seeded-source
+	randGen := rand.New(src)
+
+	// Generate a random integer in the range of [0, len(helloList))
+	index := randGen.IntN(len(helloList))
+
+	// Call a function and receive multiple return values
+	// The return values depends on how the function hello was defined
+	helloMsg, err := hello(index)
+	// Handle any errors
+	// In Go, errors are handled explicitly with if-conditions
+	if err != nil {
+		// log.Fatal() is equivalent to [Print] followed by os.Exit(1)
+		log.Fatal(err)
+	}
+
+	// Print hello mesage to the console
+	fmt.Println(helloMsg)
+
+	// Print an underline to the hello message for formatting
+	// NOTE: In Go, strings are handled as the concept of Runes
+	// len() returns the number of bytes in the string
+	// To get the actual count of characters, we use utf8.RuneCountInString()
+	// NOTE: This might still not work exaclty in some culture if the character sizes do not match that of "*"
+	fmt.Println(strings.Repeat("*", utf8.RuneCountInString(helloMsg)))
+}
+
+// FOR WINDOWS:
+//  To run:                 go run 01.variables-operators\src\main.go
+//  To compile:             go build -o 01.variables-operators\bin\variables-operators.exe 01.variables-operators\src\main.go
+//  To run after compile:   .\01.variables-operators\bin\variables-operators.exe
+//  Compile + Run:          go build -o 01.variables-operators\bin\variables-operators.exe 01.variables-operators\src\main.go && .\01.variables-operators\bin\variables-operators.exe
+
+// FOR LINUX:
+//  To run:                 go run 01.variables-operators/src/main.go
+//  To compile:             go build -o 01.variables-operators/bin/variables-operators 01.variables-operators/src/main.go
+//  To run after compile:   ./01.variables-operators/bin/variables-operators
+//  Compile + Run:          go build -o 01.variables-operators/bin/variables-operators 01.variables-operators/src/main.go && ./01.variables-operators/bin/variables-operators
