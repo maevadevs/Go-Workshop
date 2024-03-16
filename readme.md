@@ -4,7 +4,6 @@
 
 - Go is designed to build simple, fast, reliable software
 - [Official documentation](https://go.dev/doc/)
-- [Book Repository](https://github.com/PacktWorkshops/The-Go-Workshop/)
 
 ## Installation, Update, Removal
 

@@ -1,5 +1,6 @@
 // PART 1: WHAT DOES GO LOOK LIKE
 // ******************************
+// To run this file, rename it to main.go and run as the listed call at the end of the file
 
 // Package
 // *******
@@ -35,8 +36,8 @@ import (
 	"unicode/utf8"
 )
 
-// Global Variables
-// ****************
+// Package-Level Variables
+// ***********************
 // Variable declarations are in the format: var varName varType = OptionalInitialValue
 // If a variable is not initialized at declaration, it will have its type's default zero-value
 // Strings in Go support multi-byte UFT-8 encoding
