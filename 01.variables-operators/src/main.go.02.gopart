@@ -3,19 +3,22 @@
 // To run this file, rename it to main.go and run as the listed call at the end of the file
 
 // NOTE: All declared variables in Go must be used
-// Variable declarations format: var varName varType = OptionalInitialValue
-//  - var: Operator to declare a variable
-//  - varName: The name of the variable
-//  - varType: The type of the variable
-//  - OptionalInitialValue: An optional initial value to give to the variable
+// Variable declarations format:
+//   var varName varType = OptionalInitialValue
+//   - var: Operator to declare a variable
+//   - varName: The name of the variable
+//   - varType: The type of the variable
+//   - OptionalInitialValue: An optional initial value to give to the variable
 // If a variable is not initialized at declaration, it will have its type's default zero-value
 
 // Package
 // *******
+
 package main
 
 // Imports
 // *******
+
 import (
 	"fmt"
 	"time"
@@ -23,17 +26,18 @@ import (
 
 // Package-Level Variables
 // ***********************
+
 // Package-Level variables are accessible by any modules in the same package
 // Variable declarations format: var varName varType = OptionalInitialValue
 // NOTE: If a variable is not initialized at declaration, it will have its type's default zero-value
 var appName string = "Declaring Variables"
 
-// We can declared multiple variables at once
+// We can declare multiple variables at once
 // This approach is common when declaring package-level variables
 // The variables do not need to be of the same type
 // They can all have their own initial value
 // We can have multiple of these declarations: A nice way to group related variables
-// NOTE: We can use this in functions as well, but it is rare in practice
+// NOTE: We can use this approach in functions as well, but it is rare in practice
 var (
 	appLang         string    = "Go"
 	appMajVersion   int       = 0
@@ -46,9 +50,9 @@ var (
 )
 
 // NOTE:
-//   - One-line multiple variable declarations can also be done using var keyword
-//   - The only limitation is that all the values must have the same type
-//   - Withing functions, they do not come up in real-world code much
+// - One-line multiple variable declarations can also be done using var keyword
+// - The only limitation is that all the values must have the same type
+// - Within functions, they do not come up in real-world code much
 var (
 	start, middle, end                        float32 // Using float32's default zero-value: 0.0
 	testName, testLeft, testMiddle, testRight = "one", 1 + start, 1.5 + middle, 2 + end
@@ -68,22 +72,24 @@ var (
 func main() {
 	// Function-Level Variables
 	// ************************
+
 	// Function-Level variables are only accessible within the function
 	var greetings string = "Welcome"
 
 	// In practice, it not always common to use the full var notation
 	// Most of the time, we remove an optional part or use the short variable declaration
-	// If we have an initial value, Go can infer the type from that using :=
+	// If we have an initial value, Go can infer the type using :=
 	// This is the most common way in which variables get defined in real-world Go code
 	// Makes code concise and compact while still being clear as to what is happening
 	// NOTE:
+	//  - := can only be used for Function-Level Variables
 	//  - := is only used at "declaration + initialization"
 	//  - Successive re-assignment must use =
-	//  - := can only be used for Function-Level Variables
 	//  - It is better to use this declaration when the implicit type is obvious
-	//  - If it is not obvious, it can create some confusion: var declaration might be better then
+	//  - If it is not obvious, it can create some confusion: `var` declaration might be better then
 	//  - Also, Go is not always able to guess the correct type needed
 	username := "maevadevs"
+
 	// fmt.Sprintf() allows to use String Interpolation
 	githubPath := fmt.Sprintf("https://github.com/%s", username)
 
@@ -93,16 +99,17 @@ func main() {
 	// Each variable must have a corresponding initial value
 	PyLang, GoLang, SqlLang := "Python", "Go", "SQL"
 
-	// The same can be done with the returns of a function
+	// The same can be done with the return-value of a function
 	isLocalSetup, localLogLevel, localCurrentTs := getLocalConfig()
 
 	// Non-English Variable Names
 	// **************************
+
 	// It is possible to use non-english variable names in Go
 	// Go is a UTF-8 compliant language
 	// There are some limitations regarding what the name of a variable can be
-	// The first character of the name must be a letter or _
-	// The rest can be a mixture of letters, numbers, and _
+	// - The first character of the name must be a letter or _
+	// - The rest can be a mixture of letters, numbers, and _
 	デバッグ := false
 	日志级别 := "info"
 	ይጀምሩ := time.Now()
@@ -110,6 +117,7 @@ func main() {
 
 	// Using the Variables
 	// *******************
+
 	// NOTE: All declared variables in Go must be used
 	fmt.Println()
 	fmt.Println("App Name:", appName)
@@ -138,17 +146,60 @@ func main() {
 
 	// Changing Variable Values
 	// ************************
+
 	// Variable values can be changed using the = operator
 	greetings = fmt.Sprintf("%s, %s! How are you today?", greetings, username)
 
 	// We can also change multiple variables at once
 	// This approach would also work when calling functions, just as it does with a variable declaration
-	// NOTE: This approach might make code harder to read and understand: It might be better to use multiple lines
+	// NOTE: This approach might make code harder to read and understand
+	// It might be better to use multiple lines
 	デバッグ, 日志级别, ይጀምሩ, _A1_Μείγμα = true, "error", time.Now(), "Hola!!"
 
 	// Checking the result
 	fmt.Println("Greetings after:", greetings)
 	fmt.Println("Re-assigning Non-English Variable Names:", デバッグ, 日志级别, ይጀምሩ.Format("2006-01-02 3:04:05 PM"), _A1_Μείγμα)
+    fmt.Println()
+
+	// Zero-Values
+	// ***********
+
+	// The empty or default value for that variable's type
+	// - bool         : False
+	// - Numbers      : 0
+	// - string       : ""
+	// - slice        : nil
+	// - map          : nil
+	// - func         : nil
+	// - interface    : nil
+	// - Channels     : nil
+	// - Pointers     : nil
+	// Other types are mostly derived from these core types
+    // Structs depends on their initializer function or the struct fields
+    // Knowing the zero values allows to avoid bugs and write concise code
+	var debug bool
+	var count int
+	var discount float64
+	var message string
+	var emails []string
+	var startTime time.Time // Struct
+
+	// Print-Formatting
+	// ****************
+
+	// These options can be used with fmt.Printf() or fmt.Sprintf()
+	// %v       Any value
+	// %#v      Value and type
+	// %+v      Value with extra information
+	// %T       Type
+	// %d       Digit in Decimal-based
+	// %s       String
+	fmt.Printf("Debug    : %#v \n", debug)
+	fmt.Printf("Count    : %#v \n", count)
+	fmt.Printf("Discount : %#v \n", discount)
+	fmt.Printf("Message  : %#v \n", message)
+	fmt.Printf("Emails   : %#v \n", emails)
+	fmt.Printf("Start    : %#v \n", startTime)
 }
 
 // Functions

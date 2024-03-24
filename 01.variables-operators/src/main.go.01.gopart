@@ -6,7 +6,7 @@
 // *******
 // Package declaration
 // All Go files must start with one of these
-// For executables, it must be named package main
+// For executables, it must be named `package main`
 // For reusable libraries, it can be named anything
 // All Go files in the same directory are considered part of the same package
 // All files in the same directory must have the same package name
@@ -17,11 +17,11 @@ package main
 // *******
 // Allows to import additional functionalities from existing packages
 // These are imports from the standard library
-// We can also import from 3rd-Party libraries
+// We can also import from 3rd-party libraries
 // A package is not from the standard library if it looks like a github URL
 // All listed import must be used
 // To use a new module, add it to your import path
-// Go will automatically download it the next time you build code
+// Go will automatically download it the next time you build the code
 // Imports only apply to the file they are declared in: No Global Imports
 // But there are automation tools that can handle this
 
@@ -38,12 +38,13 @@ import (
 
 // Package-Level Variables
 // ***********************
-// Variable declarations are in the format: var varName varType = OptionalInitialValue
+// Variable declarations are in the format:
+//    var varName varType = OptionalInitialValue
 // If a variable is not initialized at declaration, it will have its type's default zero-value
 // Strings in Go support multi-byte UFT-8 encoding
 // There are 3 types of lists in Go:
-//  - Slice: Typed, Dynamic Length, Auto-Increment and Contiguous Number Key
 //  - Array: Typed, Fixed Length, Auto-Increment and Contiguous Number Key
+//  - Slice: Typed, Dynamic Length, Auto-Increment and Contiguous Number Key
 //  - Map:   Typed, Key-Value Pairs, Explicit-Choice Key
 
 // This is an example of a global variable of type slice of strings
@@ -57,9 +58,13 @@ var helloList []string = []string{
 
 // Functions
 // *********
-// Function declarations are in the format: func funcName(argName argType) OptionalReturnType { body }
+// Function declarations are in the format:
+//    func funcName(argName argType) OptionalReturnType {
+//        body
+//    }
 // A function acts as a unit of logic that is called when and as often as is needed
-// Calling a function is a blocking operation: The code that calls it stops running and waits for the function to finish running
+// Calling a function is a blocking operation
+// The code that calls it stops running and waits for the function to finish running
 // Functions are a great tool for keeping code organized and understandable
 // NOTE: Having an error as last return value is a very common thing to have in Go
 // NOTE: The closest comment or group of comments at the top of the function is used as its docstring
@@ -104,7 +109,7 @@ func main() {
 	// Using := allows to declare and initialize a variable at once
 	// The type of the variable is implicited from the type of the assigned value
 	// In this case, rand.NewPCG() returns a *rand.PCG type, so src is a *rand.PCG
-	// This shortcut is one of the many things that makes Go feel like a dynamically typed language
+	// This shortcut is one of the many things that makes Go feel like a dynamically-typed language
 	// NOTE: We only use := when declaring AND initializing
 	// Successive re-assignements must use =
 	src := rand.NewPCG(uint64(nowTs), uint64(nowTs*2))
@@ -118,10 +123,12 @@ func main() {
 	// Call a function and receive multiple return values
 	// The return values depends on how the function hello was defined
 	helloMsg, err := hello(index)
-	// Handle any errors
+	// Handle any errors if any
 	// In Go, errors are handled explicitly with if-conditions
 	if err != nil {
 		// log.Fatal() is equivalent to [Print] followed by os.Exit(1)
+        // fmt.Println(err)
+        // os.Exit(1)
 		log.Fatal(err)
 	}
 

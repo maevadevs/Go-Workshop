@@ -1,0 +1,142 @@
+// PART 3: OPERATORS
+// *****************
+// To run this file, rename it to main.go and run as the listed call at the end of the file
+
+// Groups of Operators:
+// - Arithmetic Operators - Used for math-related tasks
+// - Comparison Operators - Used to compare two values
+// - Logical Operators - Used with Boolean values to see whether they are both true, only one is true, or whether a bool is false
+// - Address operators - Used to work with pointers
+// - Receive operators - Used when working with Go channels
+
+// Package
+// *******
+package main
+
+// Imports
+// *******
+import "fmt"
+
+// main
+// ****
+
+// The main entry point of the application.
+func main() {
+	// This is a simulation of a restaurant bill application
+	// Main course: 2 items that cost 13 USD each
+	var total float64 = 2 * 13.00
+
+	// Drinks: 4 items that cost 2.25 USD each
+	total = total + (4 * 2.25)
+	fmt.Println("Sub  :", total)
+
+	// Discount: 5 USD
+	total = total - 5
+	fmt.Println("Tip  :", -5)
+	fmt.Println("Sub  :", total)
+
+	// 10% Tip
+	tip := total * 0.1
+	total = total + tip
+	fmt.Println("Tip  :", tip)
+	fmt.Println("Sub  :", total)
+
+	// Split bill
+	split := total / 2
+	fmt.Println("Split:", split)
+
+	// Reward every 5th visit
+	visitCount := 24
+	visitCount = visitCount + 1
+	remainder := visitCount % 5
+	if remainder == 0 {
+		fmt.Println("With this visit, you've earned a reward.")
+	}
+	fmt.Println()
+
+	// Which operators we can use vary with the different types of values
+	// Some operators' actions depend on the operands' data types
+
+	// Joining 2 strings
+	givenName := "John"
+	familyName := "Smith"
+	fullName := givenName + " " + familyName
+	fmt.Println("Hello,", fullName)
+	fmt.Println()
+
+	// Shorthand Operators
+	// *******************
+
+	// --: Reduce a number by 1
+	// ++: Increase a number by 1
+	// +=: Add and assign
+	// -=: Subtract and assign
+	count := 5
+	count += 5
+	fmt.Println("count:", count)
+
+	count--
+	fmt.Println("count:", count)
+
+	count -= 5
+	fmt.Println("count:", count)
+
+	// The += shorthand also works with strings
+	// Acts as "Concatenate and assign"
+	name := "John"
+	name += " Smith"
+	greetings := fmt.Sprintf("Hello, %s!", name)
+	fmt.Println(greetings)
+	fmt.Println()
+
+	// Having these shortcut makes coding more engaging
+	// Increment and decrement are useful with loops
+	// The shortcuts are easy to read
+
+	// Comparing Values
+	// ****************
+
+	// Allows code to make decisions via comparisons
+	// Conditional rules come in the form of comparisons
+	// We use another set of operators to make these comparisons: Logical Operators
+	// The result of the comparisons is always either `true` or `false`
+	// Might need to make multiples comparisons to make a single decision
+	// The logical operators:
+	//  - Mostly work with two values
+	//  - Always result in a Boolean value
+
+	// Comparison Operators
+	//  - ==    True if two values are the same
+	//  - !=    True if two values are not the same
+	//  - <     True if the left value is less than the right value
+	//  - <=    True if the left value is less or equal to the right value
+	//  - >     True if the left value is greater than the right value
+	//  - >=    True if the left value is greater than or equal to the right value
+	// Logical Operators
+	//  - &&    True if the left and right values are both True
+	//  - ||    True if one or both the left and right values are True
+	//  - !     This operator only works with a single value and results in True if the value is False
+
+	// Membership-Level logic example
+	//  - Sliver: Between 10 and 20 visits inclusively
+	//  - Gold: Between 21 and 30 visits inclusively
+	//  - Platinum: Over 30 visits
+	visits := 15
+	fmt.Println("First visit     :", visits == 1)
+	fmt.Println("Return visit    :", visits != 1)
+	fmt.Println("Silver member   :", visits >= 10 && visits < 21)
+	fmt.Println("Gold member     :", visits > 20 && visits <= 30)
+	fmt.Println("Platinum member :", visits > 30)
+}
+
+// FOR WINDOWS:
+//  To run:                 go run 01.variables-operators\src\main.go
+//  To compile:             go build -o 01.variables-operators\bin\variables-operators.exe 01.variables-operators\src\main.go
+//  To run after compile:   .\01.variables-operators\bin\variables-operators.exe
+//  Compile + Run:          go build -o 01.variables-operators\bin\variables-operators.exe 01.variables-operators\src\main.go && .\01.variables-operators\bin\variables-operators.exe
+
+// FOR LINUX:
+//  To run:                 go run 01.variables-operators/src/main.go
+//  To compile:             go build -o 01.variables-operators/bin/variables-operators 01.variables-operators/src/main.go
+//  To run after compile:   ./01.variables-operators/bin/variables-operators
+//  Compile + Run:          go build -o 01.variables-operators/bin/variables-operators 01.variables-operators/src/main.go && ./01.variables-operators/bin/variables-operators
