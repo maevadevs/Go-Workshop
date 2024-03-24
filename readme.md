@@ -15,6 +15,8 @@ Check [here](https://go.dev/doc/install)
    - What Does Go Look Like
    - Declaring Variables
    - Operators
+   - Values and Pointers
+   - Constants and Enums
 2. Logic and Loops
 3. Core Types
 4. Complex Types

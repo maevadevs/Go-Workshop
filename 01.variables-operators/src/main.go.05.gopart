@@ -1,0 +1,132 @@
+// PART 5: CONSTANTS AND ENUMS
+// ***************************
+// To run this file, rename it to main.go and run as the listed call at the end of the file
+
+// Package
+// *******
+package main
+
+// Imports
+// *******
+import "fmt"
+
+// Global Variables and Constants
+// ******************************
+
+// Constants cannot change their initial values
+// It is better to define Constants than to hard-code values
+// Declaration is similar to `var` but use `const`
+// Initial value is required
+// Types are optional: Can be inferred from the initial value
+// initial value can be a literal or a simple statement
+// Similar to `var`, we can declare multiple const in one statement as well
+
+const (
+	GLOBAL_LIMIT       = 100
+	MAX_CACHE_SIZE int = GLOBAL_LIMIT * 10
+	CACHE_KEY_BOOK     = "book_"
+	CACHE_KEY_CD       = "cd_"
+)
+
+var cache map[string]string
+
+// Enums
+// *****
+
+// A way of defining a fixed list of values that are all related
+// Go does not have a built-in type for enums
+// But we can use `iota` with constants
+// `iota` makes enums easier to create and maintain
+// Simplify definitions of incrementing numbers
+// The value of iota is reset to 0 whenever the word `const` appears in the source
+// Incremented by one after each `ConstSpec` e.g. each Line
+
+const (
+	SUNDAY = iota
+	MONDAY
+	TUESDAY
+	WEDNESDAY
+	THURSDAY
+	FRIDAY
+	SATURDAY
+)
+
+// The above is equivalent to the following
+// const (
+//     Sunday    = 0
+//     Monday    = 1
+//     Tuesday   = 2
+//     Wednesday = 3
+//     Thursday  = 4
+//     Friday    = 5
+//     Saturday  = 6
+// )
+
+// main
+// ****
+
+// The main entry point of the application.
+func main() {
+	// Initialize the cache
+	cache = make(map[string]string)
+
+	// Add a book to the cache
+	SetBook("1234-5678", "Learning Golang", cache)
+
+	// Add a CD to the cache
+	SetCD("1234-5678", "Learning Golang Audio Book", cache)
+
+	// Print the book from cache
+	fmt.Println("Book :", GetBook("1234-5678", cache))
+
+	// Print the CD from cache
+	fmt.Println("CD   :", GetCD("1234-5678", cache))
+}
+
+// Functions
+// *********
+
+// Get items from the cache.
+func cacheGet(key string, cache map[string]string) string {
+	return cache[key]
+}
+
+// Set items into the cache.
+func cacheSet(key, val string, cache map[string]string) {
+	if len(cache)+1 >= MAX_CACHE_SIZE {
+		return
+	}
+	cache[key] = val
+}
+
+// Get a book from the cache.
+func GetBook(isbn string, cache map[string]string) string {
+	return cacheGet(CACHE_KEY_BOOK+isbn, cache)
+}
+
+// Add a book to the cache.
+func SetBook(isbn string, name string, cache map[string]string) {
+	cacheSet(CACHE_KEY_BOOK+isbn, name, cache)
+}
+
+// Get a CD from the cache.
+func GetCD(sku string, cache map[string]string) string {
+	return cacheGet(CACHE_KEY_CD+sku, cache)
+}
+
+// Add CD to the cache.
+func SetCD(sku string, title string, cache map[string]string) {
+	cacheSet(CACHE_KEY_CD+sku, title, cache)
+}
+
+// FOR WINDOWS:
+//  To run:                 go run 01.variables-operators\src\main.go
+//  To compile:             go build -o 01.variables-operators\bin\variables-operators.exe 01.variables-operators\src\main.go
+//  To run after compile:   .\01.variables-operators\bin\variables-operators.exe
+//  Compile + Run:          go build -o 01.variables-operators\bin\variables-operators.exe 01.variables-operators\src\main.go && .\01.variables-operators\bin\variables-operators.exe
+
+// FOR LINUX:
+//  To run:                 go run 01.variables-operators/src/main.go
+//  To compile:             go build -o 01.variables-operators/bin/variables-operators 01.variables-operators/src/main.go
+//  To run after compile:   ./01.variables-operators/bin/variables-operators
+//  Compile + Run:          go build -o 01.variables-operators/bin/variables-operators 01.variables-operators/src/main.go && ./01.variables-operators/bin/variables-operators
