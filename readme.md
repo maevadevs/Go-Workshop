@@ -17,6 +17,7 @@ Check [here](https://go.dev/doc/install)
    - Operators
    - Values and Pointers
    - Constants and Enums
+   - Variable Scope
 2. Logic and Loops
 3. Core Types
 4. Complex Types
