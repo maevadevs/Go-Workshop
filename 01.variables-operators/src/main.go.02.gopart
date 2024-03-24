@@ -13,12 +13,10 @@
 
 // Package
 // *******
-
 package main
 
 // Imports
 // *******
-
 import (
 	"fmt"
 	"time"

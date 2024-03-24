@@ -1,0 +1,186 @@
+// PART 4: VALUES AND POINTERS
+// ***************************
+// To run this file, rename it to main.go and run as the listed call at the end of the file
+
+// Package
+// *******
+package main
+
+// Imports
+// *******
+import (
+	"fmt"
+	"time"
+)
+
+// main
+// ****
+
+// The main entry point of the application.
+func main() {
+	// Examples of values are int, bool, and string
+	// When passed to a function, Go makes a copy of the value
+	// It is the copy that is used in the function
+	// A change made to the value inside the function does not affect the value used when calling the function
+	// This approach tends to end up with code that has fewer bugs
+	// Go can use its simple memory management system called Stack
+	// Downside: Value-Copying uses more and more memory
+	//  - Functions tend to be small
+	//  - Values get passed to lots of functions
+	//  - Copying by value can sometimes end up using much more memory than needed
+	name := "John"
+	fmt.Println("name before:", name)
+
+	// The name variable is copied by value and is not modified
+	greet(name)
+	fmt.Println("Name after:", name)
+	fmt.Println()
+
+	// Pointer
+	// *******
+
+	// This is an alternative to copying value when passed to functions
+	// Uses less memory
+	// We create a pointer and pass that to the function
+	// Pointer:
+	//  - Not a value by itself
+	//  - A direction to the value that we actually want
+	//  - To get to the value, we must follow the directions
+	// When using pointers:
+	//  - Go will not make a Copy of the passed value
+	//  - Go cannot manage the value's memory using the stack: Use Heap instead
+	// The Stack relies on simple scope logic to know when it can reclaim the memory used by a value
+	//  - Having a pointer to a variable means these rules do not work
+	//  - The Heap allows the value to exist until no elements has a pointer to it anymore
+	//  - The Automated Garbage Collector will then reclaim that memory
+	// Having a pointer to a value means that a value is put on the Heap
+	//  - Working out whether a value needs to be put on the Heap is called Escape Analysis
+	//  - There are times when a value with no pointers is also put on the Heap
+	// Memory management is not part of Go's language specification
+	//  - Go relies on Automated Memory Management (GC)
+	//  - Memory management is considered an internal implementation detail
+	// Using Pointer could help memory, but unclear on the advantage for CPU
+	//  - When a value gets copied, Go needs CPU cycles to get that memory and GC
+	//  - Using a pointer avoids this CPU usage
+	//  - However, a value on the Heap needs to be managed by the GC
+	//  - This process can become a CPU bottleneck in certain situations
+	//  - The GC might do lots of checking, which uses up CPU cycles
+	//  - The best approach is the classic performance optimization:
+	//    1. Do not prematurely optimize
+	//    2. Measure before you make a change
+	//    3. Measure after you have made a change
+	// Pointers can also be used for code design
+	//  - Cleaner interface and simpler code
+	//  - A value-type will always default to its zero-value
+	//  - A pointer-type allows for an "is not set" state `nil` as well as holding a value
+	//  - `nil` is a special type that represents something not having a value
+	//  - But this can also cause runtime errors: Compare if ptr != nil first before using
+	//  - We can also compare pointers with other pointers
+	//  - Comparing a pointer to itself will result in true
+	//  - Comparing a pointer does not compare the value they point to
+
+	// To get a pointer, there are multiple options:
+
+	//  1. Declare a variable as being a `pointer` type using a `var` statement: Add `*` before the type
+	//       var <name> *<type> // Initial value is nil
+	var count1 *int
+	fmt.Printf("count1: %#v\n", count1) // nil
+
+	//  2. Use the `new` keyword: Get some memory for a type and return a pointer to that address
+	//       <name> := new(<type>)
+	count2 := new(int)
+	fmt.Printf("count2: %#v\n", count2)
+
+	//  - Use the `&` on an existing variable
+	//       <name> := &<varname>
+	var countTemp int
+	count3 := &countTemp
+	fmt.Printf("count3: %#v\n", count3)
+
+	// We can also create a pointer from some types without a temporary variable
+	t := &time.Time{}
+	fmt.Printf("time  : %#v\n", t)
+	fmt.Println()
+
+	// Getting Values From A Pointer
+	// *****************************
+
+	// Pointers are either `nil` or a memory address
+	// To get the actual value they are pointed at, we need to dereference the pointer
+	// We use `*` for dereferencing a pointer
+	//    <valName> = *<ptrName>
+	// Dereferencing a zero or `nil` pointer is a common bug in Go
+	//  - The compiler does not warn about it
+	//  - It happens when the app is running (Runtime Error)
+	//  - It is always best practice to check a pointer is not `nil` before dereferencing it
+	//  - But do not need to always dereference: Often, Go handles dereferencing automatically is using properties
+
+	if count1 != nil {
+		// Explicit Dereferencing: This will not print because count1 is a nil pointer
+		fmt.Printf("count1: %#v\n", *count1)
+	}
+	if count2 != nil {
+		// Explicit Dereferencing
+		fmt.Printf("count2: %#v\n", *count2)
+	}
+	if count3 != nil {
+		// Explicit Dereferencing
+		fmt.Printf("count3: %#v\n", *count3)
+	}
+	if t != nil {
+		// Explicit Dereferencing
+		fmt.Printf("time  : %#v\n", *t)
+		// Implicit Dereferencing: using Property on the pointer
+		fmt.Printf("time  : %#v\n", t.String())
+	}
+	fmt.Println()
+
+	// Function Design With Pointers
+	// *****************************
+
+	// Using a pointer can change how we use a function
+	// A function using pointer must be coded to accept pointers
+	// Any changes made to the value of the variable in the function
+	// also affects the value of the variable outside of the function
+	// NOTE:
+	// - Passing values by a pointer has traditionally been shown to be more error-prone
+	// - Though It is also common to use pointers in functions to create more efficient code
+	var count int
+
+	add5Value(count)
+	fmt.Println("add5Value post:", count)
+
+	add5Point(&count)
+	fmt.Println("add5Point post:", count)
+}
+
+// Take a name value and greet that person.
+func greet(name string) {
+	lname := "Smith"
+	name += " " + lname
+	fmt.Printf("Hello, %s!\n", name)
+}
+
+// Add 5 by value.
+func add5Value(count int) {
+	count += 5
+	fmt.Println("add5Value   :", count)
+}
+
+// Add 5 by pointer.
+func add5Point(count *int) {
+	*count += 5
+	fmt.Println("add5Point   :", *count)
+}
+
+// FOR WINDOWS:
+//  To run:                 go run 01.variables-operators\src\main.go
+//  To compile:             go build -o 01.variables-operators\bin\variables-operators.exe 01.variables-operators\src\main.go
+//  To run after compile:   .\01.variables-operators\bin\variables-operators.exe
+//  Compile + Run:          go build -o 01.variables-operators\bin\variables-operators.exe 01.variables-operators\src\main.go && .\01.variables-operators\bin\variables-operators.exe
+
+// FOR LINUX:
+//  To run:                 go run 01.variables-operators/src/main.go
+//  To compile:             go build -o 01.variables-operators/bin/variables-operators 01.variables-operators/src/main.go
+//  To run after compile:   ./01.variables-operators/bin/variables-operators
+//  Compile + Run:          go build -o 01.variables-operators/bin/variables-operators 01.variables-operators/src/main.go && ./01.variables-operators/bin/variables-operators
